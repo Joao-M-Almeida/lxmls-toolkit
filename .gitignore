@@ -2,3 +2,5 @@
 /LXMLS_Toolkit.egg-info/
 /build/
 /dist/
+.ipynb_checkpoints/
+*.pred

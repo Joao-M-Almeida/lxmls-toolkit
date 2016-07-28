@@ -50,9 +50,49 @@ class DependencyDecoder:
         """
         Parse using Eisner's algorithm.
         """
+        """
+        size = scores.shape[0]
 
-        # Complete Exercise 4.3.6 
-        raise NotImplementedError("Complete Exercise 4.3.6")
+        incomp = np.zeros((size, size, 2))
+        comp = np.zeros((size, size, 2))
+
+        for k in xrange(1, size):
+            for s in xrange(0, size - k):
+                t = s + k
+
+
+                maximum = comp[s, s, 1] + comp[s+1, t, 0] + scores[t, s]
+                for r in xrange(s, t):
+                    temp = comp[s, r, 1] + comp[r+1, t, 0] + scores[t, s]
+                    if maximum < temp:
+                        maximum = temp
+                incomp[s, t, 0] = maximum
+
+                maximum = comp[s, s, 1] + comp[s+1, t, 0] + scores[s, t]
+                for r in xrange(s, t):
+                    temp = comp[s, r, 1] + comp[r+1, t, 0] + scores[s, t]
+                    if maximum < temp:
+                        maximum = temp
+                incomp[s, t, 1] = maximum
+
+                maximum = comp[s, s, 0] + incomp[s, t, 0]
+                for r in xrange(s, t):
+                    temp = comp[s, r, 0] + comp[r, t, 0]
+                    if maximum < temp:
+                        maximum = temp
+                comp[s, t, 0] = maximum
+
+                maximum = incomp[s, s+1, 1] + incomp[s+1, t, 1]
+                for r in xrange(s, t):
+                    temp = incomp[s, r+1, 1] + comp[r+1, t, 1]
+                    if maximum < temp:
+                        maximum = temp
+                comp[s, t, 1] = maximum
+        heads = np.zeros((size, 1))
+        self.backtrack_eisner(incomp, comp, 0, size-1, 1, 1, heads)
+        return heads
+        """
+        raise NotImplementedError("Code not working")
 
     def backtrack_eisner(self, incomplete_backtrack, complete_backtrack, s, t, direction, complete, heads):
         """

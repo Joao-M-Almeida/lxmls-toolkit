@@ -95,8 +95,8 @@ class SequenceClassificationDecoder:
         # Most likely sequence.
         best_path = -np.ones(length, dtype=int)
 
-        # Complete Exercise 2.8 
-        raise NotImplementedError("Complete Exercise 2.8")
+        # Complete Exercise 2.8
+        #raise NotImplementedError("Complete Exercise 2.8")
 
         #### Little guide of the implementation ####################################
         # Initializatize the viterbi scores
@@ -112,7 +112,26 @@ class SequenceClassificationDecoder:
         #
         # return best_path and best_score
         ############################################################################
- 
+
+        for i in xrange(num_states):
+            #viterbi_scores[0, i] = logsum_pair(initial_scores[i], emission_scores[0, i])
+            viterbi_scores[0, i] = initial_scores[i] + emission_scores[0, i]
+
+        for i in xrange(1, length):
+            for k in xrange(num_states):
+                viterbi_scores[i, k] = (np.max(transition_scores[i-1, k, :] + viterbi_scores[i-1, :]) + emission_scores[i, k])
+                #import pdb; pdb.set_trace()
+                viterbi_paths[i, k] = np.argmax(transition_scores[i-1, k, :] + viterbi_scores[i-1, :])
+
+        best_score = np.max(final_scores + viterbi_scores[length-1])
+
+        best_path[length-1] = np.argmax(final_scores + viterbi_scores[length-1])
+
+
+
+        for i in reversed(xrange(0, length-1)):
+            best_path[i] = viterbi_paths[i+1, best_path[i+1]]
+
         return best_path, best_score
 
     def run_forward_backward(self, initial_scores, transition_scores, final_scores, emission_scores):

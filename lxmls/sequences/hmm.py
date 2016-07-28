@@ -136,9 +136,17 @@ class HMM(sc.SequenceClassifier):
         self.final_counts.fill(smoothing)
         self.emission_counts.fill(smoothing)
 
+    #state_posteriors = np.zeros([length, num_states])
+    #transition_posteriors = np.zeros([length-1, num_states, num_states])
     def update_counts(self, sequence, state_posteriors, transition_posteriors):
         """ Used in the E-step in EM."""
-        # Complete Exercise 2.10 
+
+        # self.initial_counts +=
+        # self.transition_counts = np.zeros([num_states, num_states])
+        # self.final_counts = np.zeros(num_states)
+        # self.emission_counts = np.zeros([num_observations, num_states])
+
+        # Complete Exercise 2.10
         raise NotImplementedError("Complete Exercise 2.10")
 
     def compute_parameters(self):
